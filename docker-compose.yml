@@ -61,6 +61,20 @@ services:
       - ./odoo/base/res_company_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_company_data.xml
     restart: no
 
+  odoo-init-lang:
+    <<: *odoo-common
+    container_name: odoo-init
+    # yamllint disable rule:line-length
+    command: --without-demo --db_host=${POSTGRES_CONTAINER_NAME} -d ${POSTGRES_DB} -r ${ODOO_USER} -w ${ODOO_PASS} -i ${ODOO_INIT_MODULES} --load-language ${ODOO_INIT_LANG} --stop-after-init
+    # yamllint enable rule:line-length
+    volumes:
+      - data_odoo:/var/lib/odoo
+      - ./odoo/config:/etc/odoo
+      - ./odoo/base/res_users_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_users_data.xml
+      - ./odoo/base/res_company_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_company_data.xml
+      - ./odoo/base/res_lang_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_lang_data.xml
+    restart: no
+
   odoo:
     <<: *odoo-common
     container_name: odoo
