@@ -10,12 +10,12 @@ This is a simple starter configuration for running a self-hosted Odoo 18 using D
  - Database initialization scripts.
  - Customizable `res_users_data.xml` and `res_company_data.xml`.
  - Custom addons in `./odoo/extra-addons`.
- - PostGIS extenstion enabled by default.
+ - PostGIS extension enabled by default.
  - Optional language setup.
 
 ## Setup ##
 
-Create a network so both containers can talk to each other:
+Create a network so containers can talk to each other:
 
 ```
  docker network create odoo
