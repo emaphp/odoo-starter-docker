@@ -72,3 +72,11 @@ Once the process has finished you can start the server by running the following:
 ```
 
 Open a new browser tab and navigate to [http://localhost:8069](http://localhost:8069). Login using the admin credentials (Default: `admin:starter`).
+
+### Running a shell ###
+
+To run a Odoo Shell session run the following:
+
+```
+ docker compose run --rm -it odoo-shell
+```

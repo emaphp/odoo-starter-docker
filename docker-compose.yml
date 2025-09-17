@@ -82,3 +82,11 @@ services:
     ports:
       - ${ODOO_PORT}:8069
     restart: unless-stopped
+
+  odoo-shell:
+    <<: *odoo-common
+    # yamllint disable rule:line-length
+    command: odoo shell --db_host=${POSTGRES_CONTAINER_NAME} -d ${POSTGRES_DB} -r ${ODOO_USER} -w ${ODOO_PASS}
+    # yamllint enable rule:line-length
+    container_name: odoo
+    restart: no
