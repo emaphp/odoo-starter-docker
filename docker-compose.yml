@@ -2,7 +2,8 @@ x-odoo-common:
   &odoo-common
   image: odoo:${ODOO_VERSION}
   depends_on:
-    - postgres
+    postgres:
+      condition: service_healthy
   volumes:
     - data_odoo:/var/lib/odoo
     - ./odoo/config:/etc/odoo
