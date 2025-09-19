@@ -9,7 +9,7 @@ x-odoo-common:
     - ./odoo/config:/etc/odoo
     - ./odoo/extra-addons:/mnt/extra-addons
   networks:
-    - odoo
+    - odoo_starter
   environment:
     HOST: ${POSTGRES_CONTAINER_NAME}
     PORT: 5432
@@ -18,7 +18,7 @@ x-odoo-common:
     POSTGRES_DB: ${POSTGRES_DB}
 
 networks:
-  odoo:
+  odoo_starter:
     external: true
 
 volumes:
@@ -47,7 +47,7 @@ services:
     # yamllint enable rule:line-length
     restart: unless-stopped
     networks:
-      - odoo
+      - odoo_starter
 
   odoo-init:
     <<: *odoo-common
