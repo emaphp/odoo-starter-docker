@@ -1,5 +1,7 @@
 # Odoo Starter Docker #
 
+ > Since Odoo 19 is already approaching, this setup will start including `pgvector/pgvector` as default database image. PostGIS will be kept as an alternative though.
+
 ## About ##
 
 This is a simple starter configuration for running a self-hosted Odoo 18 using Docker.
@@ -11,14 +13,14 @@ This is a simple starter configuration for running a self-hosted Odoo 18 using D
  - Customizable `res_users_data.xml` and `res_company_data.xml`.
  - Custom addons in `./odoo/extra-addons`.
  - PostGIS extension enabled by default.
- - Optional language setup.
+ - Additional language setup.
 
 ## Setup ##
 
 Create a network so containers can talk to each other:
 
 ```
- docker network create odoo
+ docker network create odoo_starter
 ```
 
 Create a new environment by copying `env-example`:
