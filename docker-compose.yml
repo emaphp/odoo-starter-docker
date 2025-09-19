@@ -73,7 +73,6 @@ services:
       - ./odoo/config:/etc/odoo
       - ./odoo/base/res_users_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_users_data.xml
       - ./odoo/base/res_company_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_company_data.xml
-      - ./odoo/base/res_lang_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_lang_data.xml
     restart: no
 
   odoo:
