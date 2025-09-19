@@ -63,7 +63,7 @@ The initialization process runs inside a container. A default configuration file
 
 This will setup the database and initialize the `base` module. You can modify `odoo/base/res_users_data.xml` to prevent using the default credentials for the `admin` user. The company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
 
-Alternatively, an `odoo-init-lang` container is also included. This process is similar to `odoo-init` but it will also try to setup the installation language by adding the `--load-language` option. The language to use must be specified in `ODOO_INIT_LANG`. This container also overrides the original language data with `odoo/base/res_lang_data.xml`.
+Alternatively, an `odoo-init-lang` container is also included. This process is similar to `odoo-init` but it will also try to setup the localization language by adding the `--load-language` option. The language to use must be specified in `ODOO_INIT_LANG`.
 
 ### Running Odoo ###
 
