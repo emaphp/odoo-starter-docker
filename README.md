@@ -1,19 +1,18 @@
 # Odoo Starter Docker #
 
- > Since Odoo 19 is already approaching, this setup will start including `pgvector/pgvector` as default database image. PostGIS will be kept as an alternative though.
-
 ## About ##
 
-This is a simple starter configuration for running a self-hosted Odoo 18 using Docker.
+This is a simple starter configuration for running a self-hosted Odoo server using Docker.
 
 ## Features ##
 
- - Simplified installation process.
- - Database initialization scripts.
+ - Two step execution process.
+ - Using `pgvector` as default database.
+ - Additional database initialization scripts.
  - Customizable `res_users_data.xml` and `res_company_data.xml`.
- - Custom addons in `./odoo/extra-addons`.
- - PostGIS extension enabled by default.
- - Additional language setup.
+ - Addons folder in `./odoo/extra-addons`.
+ - Optional language setup.
+ - Version-specific branches.
 
 ## Setup ##
 
@@ -31,7 +30,7 @@ Create a new environment by copying `env-example`:
 
 Adjust the values in the new file. Make sure they make sense in your environment. This is the full list of values:
 
- - `POSTGRES_VERSION`: The `postgis` Docker image tag to use.
+ - `POSTGRES_VERSION`: The `pgvector` Docker image tag to use.
  - `POSTGRES_CONTAINER_NAME`: The `postgres` container name. Connection from the `odoo` container must use this as the database host.
  - `POSTGRES_USER`: Default database superadmin user.
  - `POSTGRES_PASSWORD`: Superadmin user password.
