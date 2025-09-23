@@ -13,6 +13,7 @@ This is a simple starter configuration for running a self-hosted Odoo server usi
  - Addons folder in `./odoo/extra-addons`.
  - Optional language setup.
  - Version-specific branches.
+ - Customized PostGIS database image.
 
 ## Setup ##
 
@@ -80,4 +81,14 @@ To run a Odoo Shell session run the following:
 
 ```
  docker compose run --rm -it odoo-shell
+```
+
+### PostGIS ###
+
+This repo also includes an alternative database image based on PostGIS. A pre-defined composer file is also available. You only need to add the `-f` flag to the commands used previously:
+
+```
+ docker compose -f docker-compose.postgis.yml up -d postgres
+ docker compose -f docker-compose.postgis.yml run --rm odoo-init
+ docker compose -f docker-compose.postgis.yml up -d odoo
 ```
