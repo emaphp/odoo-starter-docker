@@ -7,13 +7,13 @@ This is a simple starter configuration for running a self-hosted Odoo server usi
 ## Features ##
 
  - Two step execution process.
- - Using `pgvector` as default database.
+ - Using `pgvector` as default database (allos *AI* and *vector search* features).
  - Additional database initialization scripts.
  - Customizable `res_users_data.xml` and `res_company_data.xml`.
  - Addons folder in `./odoo/extra-addons`.
  - Optional language setup.
  - Version-specific branches.
- - Customized PostGIS database image.
+ - Extras: Customized PostGIS database image.
 
 ## Setup ##
 
