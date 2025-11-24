@@ -62,9 +62,15 @@ The initialization process is implemented as a single-run container which you ca
  docker compose run --rm odoo-init-demo
 ```
 
-This will setup the database and initialize the `base` module. You'll find the default configuration file under `./odoo/config/odoo.conf`. This process will populate the database with the demo data as well. You can modify `odoo/base/res_users_data.xml` to prevent using the default credentials for the `admin` user. The company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
+This will setup the demo database and initialize the `base` module. You'll find the default configuration file under `./odoo/config/odoo.conf`. You can modify `odoo/base/res_users_data.xml` to prevent using the default credentials for the `admin` user. The company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
 
-Alternatively, an `odoo-init` container is also included. This process is similar to `odoo-init-demo` but it will also try to setup the country and localization language by adding the `--country` and `--load-language` options. Both country and language must be specified in the environment file as `ODOO_INIT_COUNTRY` and `ODOO_INIT_LANG` respectively. This container will not include demo data.
+Alternatively, an `odoo-init` container is also included. This container will try to setup the localization language by adding the `--load-language` option. You can find the value for this option under `ODOO_INIT_LANG`. Keep in mind that for a full setup you might need to include additional localization modules, which need to be added to `ODOO_INIT_MODULES` (ex. `ODOO_INIT_MODULES=base,l10n_ES`). Running this container is basically the same:
+
+```
+ docker compose run --rm odoo-init
+```
+
+This container will not populate the database with the demo data.
 
 ### Running Odoo ###
 
