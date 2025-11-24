@@ -66,7 +66,7 @@ services:
     <<: *odoo-common
     container_name: odoo-init
     # yamllint disable rule:line-length
-    command: --without-demo --db_host=${POSTGRES_CONTAINER_NAME} -i ${ODOO_INIT_MODULES} --country ${ODOO_INIT_COUNTRY} --load-language ${ODOO_INIT_LANG} --stop-after-init
+    command: --without-demo --db_host=${POSTGRES_CONTAINER_NAME} -i ${ODOO_INIT_MODULES} --load-language ${ODOO_INIT_LANG} --stop-after-init
     # yamllint enable rule:line-length
     volumes:
       - data_odoo:/var/lib/odoo
