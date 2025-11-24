@@ -41,7 +41,8 @@ Adjust the values in the new file. Make sure they make sense in your environment
  - `ODOO_PASS`: The database password for Odoo database (default: `pgsecret`).
  - `ODOO_PORT`: The port to use by Odoo (default: `8069`).
  - `ODOO_INIT_MODULES`: The list of modules to initialize (default: `base`).
- - `ODOO_INIT_LANG`: The language to load during setup. Only used by `odoo-init-lang`.
+ - `ODOO_INIT_COUNTRY`: The ISO code of the country to load during setup. Only used by `odoo-init`.
+ - `ODOO_INIT_LANG`: The language to load during setup. Only used by `odoo-init`.
 
 ### Database ###
 
@@ -55,15 +56,15 @@ By default, database port is not exposed.
 
 ### Initialization ###
 
-The initialization process runs inside a container. A default configuration file located in `./odoo/config/odoo.conf` is used.
+The initialization process is implemented as a single-run container which you can run like this:
 
 ```
- docker compose run --rm odoo-init
+ docker compose run --rm odoo-init-demo
 ```
 
-This will setup the database and initialize the `base` module. You can modify `odoo/base/res_users_data.xml` to prevent using the default credentials for the `admin` user. The company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
+This will setup the database and initialize the `base` module. You'll find the default configuration file under `./odoo/config/odoo.conf`. This process will populate the database with the demo data as well. You can modify `odoo/base/res_users_data.xml` to prevent using the default credentials for the `admin` user. The company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
 
-Alternatively, an `odoo-init-lang` container is also included. This process is similar to `odoo-init` but it will also try to setup the localization language by adding the `--load-language` option. The language to use must be specified in `ODOO_INIT_LANG`.
+Alternatively, an `odoo-init` container is also included. This process is similar to `odoo-init-demo` but it will also try to setup the country and localization language by adding the `--country` and `--load-language` options. Both country and language must be specified in the environment file as `ODOO_INIT_COUNTRY` and `ODOO_INIT_LANG` respectively. This container will not include demo data.
 
 ### Running Odoo ###
 
