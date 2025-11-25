@@ -51,7 +51,7 @@ services:
 
   odoo-init-demo:
     <<: *odoo-common
-    container_name: odoo-init
+    container_name: odoo-init-demo
     # yamllint disable rule:line-length
     command: --with-demo --db_host=${POSTGRES_CONTAINER_NAME} -i ${ODOO_INIT_MODULES} --stop-after-init
     # yamllint enable rule:line-length
@@ -62,9 +62,22 @@ services:
       - ./odoo/base/res_company_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_company_data.xml
     restart: no
 
-  odoo-init:
+  odoo-init-db:
     <<: *odoo-common
-    container_name: odoo-init
+    container_name: odoo-init-db
+    # yamllint disable rule:line-length
+    entrypoint: /usr/bin/odoo db init --force --country ${ODOO_INIT_COUNTRY} --language ${ODOO_INIT_LANG} --username ${ODOO_ADMIN_USERNAME} --password ${ODOO_ADMIN_PASSWORD} ${POSTGRES_DB}
+    # yamllint enable rule:line-length
+    volumes:
+      - data_odoo:/var/lib/odoo
+      - ./odoo/config:/etc/odoo
+      - ./odoo/base/res_users_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_users_data.xml
+      - ./odoo/base/res_company_data.xml:/usr/lib/python3/dist-packages/odoo/addons/base/data/res_company_data.xml
+    restart: no
+
+  odoo-init-modules:
+    <<: *odoo-common
+    container_name: odoo-init-modules
     # yamllint disable rule:line-length
     command: --without-demo --db_host=${POSTGRES_CONTAINER_NAME} -i ${ODOO_INIT_MODULES} --load-language ${ODOO_INIT_LANG} --stop-after-init
     # yamllint enable rule:line-length
@@ -88,5 +101,5 @@ services:
     # yamllint disable rule:line-length
     command: odoo shell --db_host=${POSTGRES_CONTAINER_NAME}
     # yamllint enable rule:line-length
-    container_name: odoo
+    container_name: odoo-sheel
     restart: no
