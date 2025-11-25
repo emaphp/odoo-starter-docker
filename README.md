@@ -7,11 +7,11 @@ This is a simple starter configuration for running a self-hosted Odoo server usi
 ## Features ##
 
  - Two step execution process.
- - Using `pgvector` as default database (allos *AI* and *vector search* features).
+ - `pgvector` extension enabled (allos *AI* and *vector search* features).
  - Additional database initialization scripts.
  - Customizable `res_users_data.xml` and `res_company_data.xml`.
  - Addons folder in `./odoo/extra-addons`.
- - Optional language setup.
+ - Optional language and localization setup.
  - Version-specific branches.
  - Extras: Customized PostGIS database image.
 
@@ -36,13 +36,16 @@ Adjust the values in the new file. Make sure they make sense in your environment
  - `POSTGRES_USER`: Default database superadmin user.
  - `POSTGRES_PASSWORD`: Superadmin user password.
  - `POSTGRES_DB`: The main database name (default: `odoo`).
- - `ODOO_VERSION`: The `odoo` image tag to use.
- - `ODOO_USER`: The database user for Odoo database (default: `odoo`).
- - `ODOO_PASS`: The database password for Odoo database (default: `pgsecret`).
- - `ODOO_PORT`: The port to use by Odoo (default: `8069`).
+ - `ODOO_VERSION`: The `odoo` image/tag to use.
+ - `ODOO_USER`: The database user for the Odoo database (default: `odoo`).
+ - `ODOO_PASS`: The database password for the Odoo database (default: `pgsecret`).
  - `ODOO_INIT_MODULES`: The list of modules to initialize (default: `base`).
- - `ODOO_INIT_COUNTRY`: The ISO code of the country to load during setup. Only used by `odoo-init`.
- - `ODOO_INIT_LANG`: The language to load during setup. Only used by `odoo-init`.
+ - `ODOO_INIT_COUNTRY`: The ISO code of the country to use during database initialization. Only used by `odoo-init-db`.
+ - `ODOO_INIT_LANG`: The language to load during setup. Only used by `odoo-init-modules`.
+ - `ODOO_ADMIN_USERNAME`: The username for the main admin account. Only used by `odoo-init-db`.
+ - `ODOO_ADMIN_PASSWORD`: The password for the main admin account. Only used by `odoo-init-db`.
+ - `ODOO_PORT`: The port to expose for HTTP (default: `8069`).
+ - `ODOO_RTC_PORT`: The port to expose for Real Time Communication (default: `8072`).
 
 ### Database ###
 
@@ -56,21 +59,37 @@ By default, database port is not exposed.
 
 ### Initialization ###
 
-The initialization process is implemented as a single-run container which you can run like this:
+This repo offers two ways to setup your Odoo application. Both methods share the same Odoo configuration, which can be found under `odoo/config/odoo.conf`.
+
+#### Fast Demo Setup ####
+
+This initialization process is implemented as a single-run container:
 
 ```
  docker compose run --rm odoo-init-demo
 ```
 
-This will setup the demo database and initialize the `base` module. You'll find the default configuration file under `./odoo/config/odoo.conf`. You can modify `odoo/base/res_users_data.xml` to prevent using the default credentials for the `admin` user. The company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
+This process will initialize the database with the demo data and activate the module list on `ODOO_INIT_MODULES`. Custom credentials can be applied by modifying `odoo/base/res_users_data.xml`. Company name can also be modified beforehand in `odoo/base/res_company_data.xml`.
 
-Alternatively, an `odoo-init` container is also included. This container will try to setup the localization language by adding the `--load-language` option. You can find the value for this option under `ODOO_INIT_LANG`. Keep in mind that for a full setup you might need to include additional localization modules, which need to be added to `ODOO_INIT_MODULES` (ex. `ODOO_INIT_MODULES=base,l10n_ES`). Running this container is basically the same:
+#### Custom Setup ####
+
+This is a two-step setup that generates a new database with custom admin credentials. Use this process if you want to customize the country and language from the start.
+
+First, make sure you set the appropiate values for `ODOO_INIT_LANG` and `ODOO_INIT_COUNTRY` and run the following:
+
+> Note: Warning. This will drop the Odoo database. Any extensions previously enabled must be re-enabled by hand.
 
 ```
- docker compose run --rm odoo-init
+ docker compose run --rm odoo-init-db
 ```
 
-This container will not populate the database with the demo data.
+This will generate a new database from scratch. It will also create an admin account using the credentials available in `ODOO_ADMIN_USERNAME` and `ODOO_ADMIN_PASSWORD`.
+
+The next process is to initialize the module list. Before this step you might want to provide additional localization modules. These need to be added to `ODOO_INIT_MODULES` (ex. `ODOO_INIT_MODULES=base,l10n_es`). Once ready, run the following:
+
+```
+ docker compose run --rm odoo-init-modules
+```
 
 ### Running Odoo ###
 
@@ -84,10 +103,18 @@ Open a new browser tab and navigate to [http://localhost:8069](http://localhost:
 
 ### Running a shell ###
 
-To run a Odoo Shell session run the following:
+To start a Odoo Shell session run the following:
 
 ```
  docker compose run --rm -it odoo-shell
+```
+
+### Running psql ###
+
+To start an instance of `psql` you can do the following:
+
+```
+ docker compose exec postgres /bin/psql -U pgadmin -d odoo -W
 ```
 
 ### PostGIS ###
@@ -96,6 +123,6 @@ This repo also includes an alternative database image based on PostGIS. A pre-de
 
 ```
  docker compose -f docker-compose.postgis.yml up -d postgres
- docker compose -f docker-compose.postgis.yml run --rm odoo-init
+ docker compose -f docker-compose.postgis.yml run --rm odoo-init-demo
  docker compose -f docker-compose.postgis.yml up -d odoo
 ```
